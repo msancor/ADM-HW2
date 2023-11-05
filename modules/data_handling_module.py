@@ -1,9 +1,13 @@
 #Here we import the necessary libraries
-import pandas as pd
+import sklearn
+import jsonlines
 import numpy as np
+import pandas as pd
+from scipy import stats
 from typing import List, Tuple
 from collections import Counter
-import jsonlines
+from sklearn import linear_model
+
 
 #Here we set the maximum number of columns to display when printing a dataframe
 pd.set_option('display.max_columns', None)
@@ -394,7 +398,92 @@ def get_ratings_above_limit_ratio(average_rating_dist: str, limit: int = 4) -> f
     #Finally we return the ratio of ratings above the limit
     return ratings_above_limit_sum/total_ratings
 
+def get_published_books_ratio(dates_list: List[pd.Period]) -> float:
+    """
+    Function that returns the ratio between the number of times an author published a book within two years after his/her last publication and the total number of publications.
 
+    Args:
+        dates_list (List[pd.Period]): List of dates.
+
+    Returns:
+        float: Ratio between the number of times an author published a book within two years after his/her last publication and the total number of publications.
+    """
+    #Here we create a list with pairs of subsequent dates
+    pairs_list = zip(dates_list[:-1], dates_list[1:])
+    #Here we initialize a list with the time gaps between subsequent dates
+    time_gaps_list = []
+    #For each pair of dates we calculate the time gap and if it is less than 2 years, we append it to the time_gaps_list
+    #It is important to notice that we use the "A" frequency in the pd.Period function in order to get the year of the date so the difference will be based only on the years
+    #We're losing information about the months and days but this is an estimation
+    for date1, date2 in pairs_list:
+        time_gap = float(pd.Period(date2, "A").year - (pd.Period(date1, "A").year))
+        if time_gap <= 2:
+            time_gaps_list.append(time_gap)
+
+    #Here we return the published books ratio
+    return len(time_gaps_list)/len(dates_list)
+
+def get_pearson_correlation(x: list, y: list) -> tuple:
+    """
+    Function that returns the Pearson correlation coefficient and the p-value for two lists of values.
+
+    Args:
+        x (list): List of values.
+        y (list): List of values.
+
+    Returns:
+        tuple: Tuple with the Pearson correlation coefficient and the p-value.
+    """
+    #Here we calculate the Pearson correlation coefficient and the p-value
+    pearson_correlation, p_value = stats.pearsonr(x, y)
+    #Here we return the Pearson correlation coefficient and the p-value
+    return pearson_correlation, p_value
+
+def t_test(x: list, y: list) -> tuple:
+    """
+    Function that returns the t-statistic and the p-value for two lists of values.
+
+    Args:
+        x (list): List of values.
+        y (list): List of values.
+
+    Returns:
+        tuple: Tuple with the t-statistic and the p-value.
+    """
+    #Here we calculate the t-statistic and the p-value
+    t_statistic, p_value = stats.ttest_ind(x, y)
+    #Here we return the t-statistic and the p-value
+    return t_statistic, p_value
+
+def linear_regression(x: list, y: list) -> tuple:
+    """
+    Function that performs a linear regression for two lists of values.
+
+    Args:
+        x (list): List of values.
+        y (list): List of values.
+
+    Returns:
+        tuple: Tuple with rsquared, linear regression model, x test and y test values.
+    """
+    #First, we transform the lists into numpy arrays.
+    x = np.array(x).reshape(-1, 1)
+    y = np.array(y).reshape(-1, 1)
+
+    #Now, we split the data into train and test sets
+    x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y, test_size=0.2, random_state=0)
+
+    #Here we create the linear regression model
+    linear_regression_model = linear_model.LinearRegression()
+
+    #Here we train the model
+    linear_regression_model.fit(x_train, y_train)
+
+    #Here we calculate the rsquared value
+    rsquared = linear_regression_model.score(x_test, y_test)
+
+    #Here we return the rsquared, linear regression model, x test and y test values
+    return rsquared, linear_regression_model, x_test, y_test
 
 
 

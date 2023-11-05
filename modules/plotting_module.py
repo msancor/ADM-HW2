@@ -129,3 +129,19 @@ def scatter_plot(data: pd.DataFrame, x: str = None, y: str = None, **kwargs) -> 
     """
     #Here we plot the scatter plot using seaborn
     sns.scatterplot(data=data, x=x, y=y, **kwargs)
+
+def hist_plot(data: pd.DataFrame, x: str = None, y: str = None, **kwargs) -> None:
+    """
+    Function that plots a histogram.
+
+    Args:
+        data (pd.DataFrame): Dataframe with the columns to plot.
+        x (str, optional): Dataframe column to plot. Defaults to None.
+        y (str, optional): Dataframe column to plot. Defaults to None.
+        **kwargs: Keyword arguments to pass to the seaborn histplot function.
+
+    Returns:
+        None
+    """
+    #Here we plot the histogram using seaborn
+    sns.histplot(data=data, x=x, y=y, **kwargs)

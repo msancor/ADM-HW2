@@ -10,6 +10,10 @@ data/*.json
 #We also ignore the .pem file
 *.pem
 
+#We ignore the images folder and the .png files inside it
+images/
+images/*.png
+
 # C extensions
 *.so
 
