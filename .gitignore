@@ -3,6 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#Here we ignore the data folder and the .json files inside it
+data/
+data/*.json
+
+#We also ignore the .pem file
+*.pem
+
 # C extensions
 *.so
 
