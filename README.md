@@ -23,6 +23,14 @@ This is a Github repository created to submit the second Homework of the **Algor
 
 The data used to work in this repository was obtained from the [Large books metadata dataset](https://www.kaggle.com/datasets/opalskies/large-books-metadata-dataset-50-mill-entries). Specifically, the ``authors.json``, ``books.json``, ``series.json`` and ``list.json`` files.
 
+## Important Note
+
+If the Notebook doesn't load through Github please try all of these steps:
+
+1. Try compiling the Notebook through its NBViewer [link](https://nbviewer.org/github/msancor/ADM-HW2/blob/main/adm_hw2.ipynb).
+2. Try downloading the Notebook and opening it in your local computer.
+3. Try opening it through Google Colab through the following [link](https://colab.research.google.com/drive/1Ecl28nopiKXPcwDm98EBH4Eabto8SjFp?usp=sharing).
+
 ---
 
 
